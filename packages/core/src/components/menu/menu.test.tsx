@@ -2,7 +2,7 @@ import { DirectionProvider } from '@base-ui-components/react';
 import { act, cleanup, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-// import { axe } from 'vitest-axe';
+import { axe } from 'vitest-axe';
 
 import { Menu } from '.';
 
@@ -22,13 +22,19 @@ const MenuTest = (props: Omit<Menu.Root.Props, 'children'>) => {
 };
 
 describe('<Menu.Root />', () => {
-    // TODO
-    // it('should have no a11y violations', async () => {
-    //     const rendered = render(<MenuTest defaultOpen />);
-    //     const result = await axe(rendered.container);
+    it('should have no a11y violations', async () => {
+        const rendered = render(<MenuTest defaultOpen />);
+        const result = await axe(rendered.container, {
+            rules: {
+                // Disable aria-hidden-focus for Base UI's focus guards
+                // Focus guards are intentional aria-hidden+focusable elements for focus trap management
+                // See: https://github.com/mui/base-ui/issues (upstream limitation)
+                'aria-hidden-focus': { enabled: false },
+            },
+        });
 
-    //     expect(result).toHaveNoViolations();
-    // });
+        expect(result).toHaveNoViolations();
+    });
 
     afterEach(cleanup);
 
@@ -323,13 +329,16 @@ describe('<Menu.Root />', () => {
             </Menu.Root>
         );
 
-        // TODO
-        // it('should have no a11y violations', async () => {
-        //     const rendered = render(<Test />);
-        //     const result = await axe(rendered.container);
+        it('should have no a11y violations', async () => {
+            const rendered = render(<Test />);
+            const result = await axe(rendered.container, {
+                rules: {
+                    'aria-hidden-focus': { enabled: false },
+                },
+            });
 
-        //     expect(result).toHaveNoViolations();
-        // });
+            expect(result).toHaveNoViolations();
+        });
 
         it('should reference the generated id in the group label', () => {
             const rendered = render(<Test />);
@@ -453,13 +462,16 @@ describe('<Menu.CheckboxItem>', () => {
         </Menu.Root>
     );
 
-    // FIXME: a11y test is always failed
-    // it('should have no a11y violations', async () => {
-    //     const rendered = render(<Test />);
-    //     const result = await axe(rendered.container);
+    it('should have no a11y violations', async () => {
+        const rendered = render(<Test />);
+        const result = await axe(rendered.container, {
+            rules: {
+                'aria-hidden-focus': { enabled: false },
+            },
+        });
 
-    //     expect(result).toHaveNoViolations();
-    // });
+        expect(result).toHaveNoViolations();
+    });
 
     it('should add the correct ARIA attributes when clicked', async () => {
         const rendered = render(<Test />);
@@ -721,13 +733,16 @@ describe('<Menu.RadioGroupItem>', () => {
         </Menu.Root>
     );
 
-    // FIXME: a11y test is always failed
-    // it('should have no a11y violations', async () => {
-    //     const rendered = render(<Test />);
-    //     const result = await axe(rendered.container);
+    it('should have no a11y violations', async () => {
+        const rendered = render(<Test />);
+        const result = await axe(rendered.container, {
+            rules: {
+                'aria-hidden-focus': { enabled: false },
+            },
+        });
 
-    //     expect(result).toHaveNoViolations();
-    // });
+        expect(result).toHaveNoViolations();
+    });
 
     it('should add the correct ARIA attributes when clicked', async () => {
         const rendered = render(<Test />);
